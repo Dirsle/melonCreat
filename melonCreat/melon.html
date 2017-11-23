@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Document</title>
+	<script src="jquery-3.2.1.min.js"></script>
+</head>
+<style>
+	*{
+		margin:0;
+		padding: 0;
+	}
+	html,body{
+		height: 100%;
+		width: 100%;
+	}
+	body{
+		display: flex;
+		flex-direction: column;
+	}
+	header{
+		width: 100%;
+		height: 100px;
+		background:yellow;
+	}
+	header button{
+		float: right;
+		width: 40px;
+		height: 40px;
+	}
+	button{
+		outline: none;
+	}
+	main{
+		display: flex;
+		flex: 1;
+	}
+	.left{
+		width: 200px;
+		height: 100%;
+		background: green;
+	}
+	.right{
+		flex: 1;
+		height: 100%;
+		background: red;
+	}
+	footer{
+		text-align: center;
+		padding: 5px;
+		background: pink;
+	}
+	.box{
+		width: 200px;
+		height: 100px;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		margin:-50px 0 0 -100px;
+		background: white;
+		line-height: 100px;
+		text-align: center;
+		display: none;
+	}
+	.time{
+		width: 100px;
+		height: 100px;
+		background: #ccc;
+		position: absolute;
+		display: none;
+		text-align: center;
+		line-height: 100px;
+		top: 50%;
+		left: 50%;
+		margin:-50px 0 0 -50px;
+	}
+</style>
+<body>
+	<header><button class="btn">按钮</button></header>
+	<main>
+		<div class="left">left</div>
+		<div class="right">right</div>
+	</main>
+	<footer>西瓜创客</footer>
+	<div class="box">
+		<button class="begin">倒计时开始</button>
+		<button class="closeBox">关闭</button>
+	</div>
+	<div class="time"></div>
+<script>
+	var btn = $('.btn');
+	var box = $('.box');
+	var boxHeight = box.height();
+	var boxWidth = box.width();
+	var closeBox = $('.closeBox');
+	var time = $('.time');
+	var begin = $('.begin');
+	var timer;
+	btn.on('click',function(e){
+		if(timer)
+			return;
+		box.show();
+		e.stopPropagation();
+	});
+
+	closeBox.on('click',function(){
+		box.hide()
+	});
+	$('body').on('click',function(e){
+		var obj = box.offset();
+		var x = e.pageX;
+		var y = e.pageY;
+		if(x>obj.left+boxWidth || x<obj.left || y<obj.top || y>obj.top+boxHeight)
+			box.hide()
+	});
+	begin.on('click',function(){
+		time.html('01:00');
+		box.hide();
+		var olddate = new Date();
+		olddate.setMinutes(olddate.getMinutes()+1);
+		time.slideDown(function(){
+			timer=setInterval(function(){
+				var newdate = +new Date();
+				var str = Math.floor((olddate-newdate)/1000);
+				time.html('00:'+str);
+				if(str<=10){
+					time.html('00:0'+str);
+					time.css("color","red");
+				}	
+				if(str<=0){
+					time.css("color","black");
+					clearInterval(timer);
+					timer=null;
+					time.slideUp();
+				}
+					
+			},1000)
+		});
+	});
+</script>
+</body>
+</html>

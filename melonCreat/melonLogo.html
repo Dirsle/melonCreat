@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+	<style>
+		canvas,body{
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+<body>
+	<canvas id='canvas'></canvas>
+</body>
+<script>
+	var canvas=document.querySelector('#canvas');
+	canvas.width=150;
+	canvas.height=150;
+	var ctx = canvas.getContext('2d');
+	img = new Image();
+    img.src="melonLogo.png";
+    img.onload = function(){
+            ctx.drawImage(img,0,0);
+        }
+</script>
+</html>
